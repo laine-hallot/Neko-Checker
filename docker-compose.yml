@@ -1,7 +1,6 @@
 version: '3.7'
 services:
-  neko_watcher:
-    # command: ["sleep", "100000000"]
-    #image: 'docker.io/bitnami/magento:2.3.1-debian-9-r39'
-    build: ./
-    
+    neko_watcher:
+        build: ./
+    maildev:
+        image: maildev/maildev

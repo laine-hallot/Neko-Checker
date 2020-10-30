@@ -8,6 +8,10 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+RUN apt update; \
+apt install -y sendmail sendmail-cf m4; \
+yes | sendmailconfig 
+
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
@@ -16,4 +20,5 @@ RUN npm install
 COPY . .
 
 EXPOSE 8080
-CMD [ "node", "server.js" ]
+USER root
+CMD [ "node", "catwatcher.js" ]

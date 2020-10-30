@@ -14,9 +14,10 @@ async function start(){
         console.log('website updated');
         console.log(hash);
         let transporter = nodemailer.createTransport({
-            sendmail: true,
-            newline: 'unix',
-            path: '/usr/sbin/sendmail'
+            host: 'maildev',
+            port: 25,
+            // We add this setting to tell nodemailer the host isn't secure during dev:
+            ignoreTLS: true
         });
         transporter.sendMail({
             from: process.env.SENDER_EMAIL,//'necochan@layn.moe',
