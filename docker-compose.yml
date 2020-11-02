@@ -2,5 +2,15 @@ version: '3.7'
 services:
     neko_watcher:
         build: ./
-    maildev:
-        image: maildev/maildev
+        networks: 
+            neko_net:
+    mail:
+        image: bytemark/smtp
+        networks: 
+            neko_net:
+                aliases: 
+                    - "mail"
+
+networks: 
+    neko_net:
+        driver: bridge

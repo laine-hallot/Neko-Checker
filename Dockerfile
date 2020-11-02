@@ -8,16 +8,15 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN apt update; \
-apt install -y sendmail sendmail-cf m4; \
-yes | sendmailconfig 
+# Bundle app source
+COPY . .
+
+
 
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
 
-# Bundle app source
-COPY . .
 
 EXPOSE 8080
 USER root

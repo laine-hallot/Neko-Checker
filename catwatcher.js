@@ -3,6 +3,9 @@ let crypto = require('crypto');
 let nodemailer = require('nodemailer'); 
 require('dotenv').config()
 let lastHash = "";
+const { promisify } = require('util');
+const fs = require('fs');
+const readFile = promisify(fs.readFile);
 
 async function start(){
     const { statusCode, data, headers } = await curly.get(process.env.TARGET_URL);//'https://www.toplinemainecoons.com/kittens')
@@ -14,7 +17,7 @@ async function start(){
         console.log('website updated');
         console.log(hash);
         let transporter = nodemailer.createTransport({
-            host: 'maildev',
+            host: 'mail',
             port: 25,
             // We add this setting to tell nodemailer the host isn't secure during dev:
             ignoreTLS: true
@@ -23,7 +26,8 @@ async function start(){
             from: process.env.SENDER_EMAIL,//'necochan@layn.moe',
             to: process.env.USER_EMAILS,//'mh@simplesolutionsfs.com, meyerwasup@gmail.com',
             subject: process.env.SUBJECT_TEXT,//'New Kittens Possible',
-            text: process.env.BODY_TEXT//'I\'ve detected a change on "https://www.toplinemainecoons.com/kittens". This could mean new kittens are available'
+            // text: process.env.BODY_TEXT,
+            html: await readFile('email.html', 'utf8')
         }, (err, info) => {
             console.log(info.envelope);
             console.log(info.messageId);
